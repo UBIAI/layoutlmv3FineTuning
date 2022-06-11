@@ -186,3 +186,4 @@ if __name__ == '__main__':
         OUTPUT_PATH += '/'
     train_dataset.save_to_disk(f'{OUTPUT_PATH}train_split')
     eval_dataset.save_to_disk(f'{OUTPUT_PATH}eval_split')
+    dataset.save_to_disk(f'{OUTPUT_PATH}raw_data')
