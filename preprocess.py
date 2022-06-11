@@ -123,7 +123,7 @@ if __name__ == '__main__':
 
     full_data_set = Dataset.from_dict(dataset_dict, features=features)
     dataset = full_data_set.train_test_split(test_size=TEST_SIZE)
-    dataset["train"] = dataset["train"].filter(filter_out_unannotated)
+#     dataset["train"] = dataset["train"].filter(filter_out_unannotated)
     processor = AutoProcessor.from_pretrained(
         "microsoft/layoutlmv3-base", apply_ocr=False)
 
