@@ -10,7 +10,7 @@ def run_tesseract_on_image(image_path):  # -> tsv output path
   if not error_code:
     return f"/content/{image_name}.tsv"
   else:
-    raise ValueError('please verify image format PNG,JPG,JPEG')
+    raise ValueError('Tesseract OCR Error please verify image format PNG,JPG,JPEG')
 
 
 def clean_tesseract_output(tsv_output_path):
