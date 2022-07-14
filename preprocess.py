@@ -47,17 +47,6 @@ def filter_out_unannotated(example):
     return not all([tag == label2id['O'] for tag in tags])
 
 
-def preprocess_data(examples):
-  images = [Image.open(path).convert("RGB") for path in examples['image_path']]
-  words = examples['words']
-  boxes = examples['bboxes']
-  word_labels = examples['ner_tags']
-
-  encoded_inputs = processor(images, words, boxes=boxes, word_labels=word_labels,
-                             padding="max_length", truncation=True)
-
-  return encoded_inputs
-
 
 if __name__ == '__main__':
 
@@ -149,25 +138,25 @@ if __name__ == '__main__':
     # unique labels.
 
 
-    def get_label_list(labels):
-        unique_labels = set()
-        for label in labels:
-            unique_labels = unique_labels | set(label)
-        label_list = list(unique_labels)
-        label_list.sort()
-        return label_list
+#     def get_label_list(labels):
+#         unique_labels = set()
+#         for label in labels:
+#             unique_labels = unique_labels | set(label)
+#         label_list = list(unique_labels)
+#         label_list.sort()
+#         return label_list
 
 
-    if isinstance(features[label_column_name].feature, ClassLabel):
-        label_list = features[label_column_name].feature.names
-        # No need to convert the labels since they are already ints.
-        id2label = {k: v for k, v in enumerate(label_list)}
-        label2id = {v: k for k, v in enumerate(label_list)}
-    else:
-        label_list = get_label_list(dataset["train"][label_column_name])
-        id2label = {k: v for k, v in enumerate(label_list)}
-        label2id = {v: k for k, v in enumerate(label_list)}
-    num_labels = len(label_list)
+#     if isinstance(features[label_column_name].feature, ClassLabel):
+#         label_list = features[label_column_name].feature.names
+#         # No need to convert the labels since they are already ints.
+#         id2label = {k: v for k, v in enumerate(label_list)}
+#         label2id = {v: k for k, v in enumerate(label_list)}
+#     else:
+#         label_list = get_label_list(dataset["train"][label_column_name])
+#         id2label = {k: v for k, v in enumerate(label_list)}
+#         label2id = {v: k for k, v in enumerate(label_list)}
+#     num_labels = len(label_list)
 
     
 
@@ -177,7 +166,7 @@ if __name__ == '__main__':
         'input_ids': Sequence(feature=Value(dtype='int64')),
         'attention_mask': Sequence(Value(dtype='int64')),
         'bbox': Array2D(dtype="int64", shape=(512, 4)),
-        'labels': Sequence(ClassLabel(names=label_list)),
+        'labels': Sequence(ClassLabel(names=labels)),
     })
 
     train_dataset = dataset["train"].map(
@@ -197,3 +186,4 @@ if __name__ == '__main__':
         OUTPUT_PATH += '/'
     train_dataset.save_to_disk(f'{OUTPUT_PATH}train_split')
     eval_dataset.save_to_disk(f'{OUTPUT_PATH}eval_split')
+    dataset.save_to_disk(f'{OUTPUT_PATH}raw_data')
