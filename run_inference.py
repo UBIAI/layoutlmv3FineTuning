@@ -8,10 +8,11 @@ import os
 if __name__ == "__main__":
     try:
         parser = argparse.ArgumentParser()
-        parser.add_argument("--model_path", type=int)
-        parser.add_argument("--images_path", type=int)
+        parser.add_argument("--model_path", type=str)
+        parser.add_argument("--images_path", type=str)
         args, _ = parser.parse_known_args()
-        image_files = os.listdir(args.images_path)
+        images_path = args.images_path
+        image_files = os.listdir(images_path)
         images_path = [images_path+f'/{image_file}' for image_file in image_files]
         inference_batch = prepare_batch_for_inference(images_path)
         context = {"model_dir": args.model_path}
