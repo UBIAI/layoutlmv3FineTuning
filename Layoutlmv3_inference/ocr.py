@@ -5,7 +5,7 @@ def run_tesseract_on_image(image_path):  # -> tsv output path
   image_name = os.path.basename(image_path)
   image_name = image_name[:image_name.find('.')]
   error_code = os.system(f'''
-  tesseract {image_path} /content/{image_name} -l eng tsv
+  tesseract "{image_path}" "/content/{image_name}" -l eng tsv
   ''')
   if not error_code:
     return f"/content/{image_name}.tsv"
